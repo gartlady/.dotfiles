@@ -1,0 +1,5 @@
+# Ignore all files in .local/share/fonts
+.local/share/fonts/*
+
+# Unignore the directory itself
+!.local/share/fonts/
