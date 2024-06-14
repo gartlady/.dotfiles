@@ -60,7 +60,7 @@ zstyle ':completion:*' menu no
 
 # Aliases
 alias ssh='env TERM=xterm-256color ssh' # allows kitty to work with ssh
-alias ls='ls --color'
+alias ls='ls -ltr --color'
 alias cd='j'
 alias cdi='ji'
 
