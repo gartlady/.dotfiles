@@ -21,7 +21,7 @@ zinit ice depth=1; zinit light romkatv/powerlevel10k
 # Add zsh plugins
 zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-autosuggestions
-#zinit light Aloxaf/fzf-tab
+zinit light Aloxaf/fzf-tab
 
 # Load completions
 autoload -U compinit && compinit
@@ -55,8 +55,8 @@ setopt hist_find_no_dups
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 zstyle ':completion:*' menu no
-#zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
-#zstyle ':fzf-tab:complete:j:*' fzf-preview 'ls --color $realpath'
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
+zstyle ':fzf-tab:complete:j:*' fzf-preview 'ls --color $realpath'
 
 # Aliases
 alias ssh='env TERM=xterm-256color ssh' # allows kitty to work with ssh
