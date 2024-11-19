@@ -313,7 +313,7 @@ require("lazy").setup({
 			require("which-key").setup()
 
 			-- Document existing key chains
-			require("which-key").register({
+			require("which-key").setup({
 				["<leader>c"] = { name = "[C]ode", _ = "which_key_ignore" },
 				["<leader>d"] = { name = "[D]ocument", _ = "which_key_ignore" },
 				["<leader>r"] = { name = "[R]ename", _ = "which_key_ignore" },
@@ -323,9 +323,9 @@ require("lazy").setup({
 				["<leader>h"] = { name = "Git [H]unk", _ = "which_key_ignore" },
 			})
 			-- visual mode
-			require("which-key").register({
-				["<leader>h"] = { "Git [H]unk" },
-			}, { mode = "v" })
+			--require("which-key").setup({
+			--	["<leader>h"] = { "Git [H]unk" },
+			--}, { mode = "v" })
 		end,
 	},
 
@@ -602,7 +602,45 @@ require("lazy").setup({
 			--  - settings (table): Override the default settings passed when initializing the server.
 			--        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
 			local servers = {
-				-- clangd = {},
+				clangd = {
+					keys = {
+						{ "<leader>ch", "<cmd>ClangdSwitchSourceHeader<cr>", desc = "Switch Source/Header (C/C++)" },
+					},
+					root_dir = function(fname)
+						return require("lspconfig.util").root_pattern(
+							"Makefile",
+							"configure.ac",
+							"configure.in",
+							"config.h.in",
+							"meson.build",
+							"meson_options.txt",
+							"build.ninja"
+						)(fname) or require("lspconfig.util").root_pattern(
+							"compile_commands.json",
+							"compile_flags.txt"
+						)(fname) or require("lspconfig.util").find_git_ancestor(fname)
+					end,
+					capabilities = {
+						offsetEncoding = { "utf-16" },
+					},
+					cmd = {
+						"clangd",
+						"--background-index",
+						"--clang-tidy",
+						"--log=verbose",
+						"--header-insertion=iwyu",
+						"--completion-style=detailed",
+						"--function-arg-placeholders",
+						"--fallback-style=llvm",
+						"--query-driver=/home/dylan/projects/personal/playdate/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-gcc",
+					},
+					init_options = {
+						usePlaceholders = true,
+						completeUnimported = true,
+						clangdFileStatus = true,
+						fallbackFlags = { "-std=c++17" },
+					},
+				},
 				-- gopls = {},
 				-- pyright = {},
 				-- rust_analyzer = {},
@@ -613,7 +651,7 @@ require("lazy").setup({
 				--
 				-- But for many setups, the LSP (`tsserver`) will work just fine
 				-- tsserver = {},
-				solargraph = {},
+				-- solargraph = {},
 				lua_ls = {
 					-- cmd = {...},
 					-- filetypes = { ...},
@@ -877,7 +915,20 @@ require("lazy").setup({
 		"nvim-treesitter/nvim-treesitter",
 		build = ":TSUpdate",
 		opts = {
-			ensure_installed = { "bash", "c", "diff", "html", "lua", "luadoc", "markdown", "vim", "vimdoc", "sql" },
+			ensure_installed = {
+				"bash",
+				"c",
+				"cpp",
+				"diff",
+				"html",
+				"lua",
+				"luadoc",
+				"markdown",
+				"vim",
+				"vimdoc",
+				"sql",
+				"json",
+			},
 			-- Autoinstall languages that are not installed
 			auto_install = true,
 			highlight = {
