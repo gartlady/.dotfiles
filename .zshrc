@@ -31,8 +31,6 @@ zinit cdreplay -q
 export PATH="$PATH:/opt/nvim-linux64/bin"
 
 export PATH=$PATH:/usr/local/go/bin
-export GOPATH=$HOME/projects/go
-export PATH=$PATH:$GOPATH/bin
 export PATH=$PATH:$HOME/.local/bin
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
@@ -82,3 +80,15 @@ alias nvm="unalias nvm; [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"; nvm $@"
 # Enable word-by-word navigation with Ctrl + Left/Right
 bindkey '^[[1;5D' backward-word
 bindkey '^[[1;5C' forward-word
+
+export PLAYDATE_SDK_PATH="/home/dylan/projects/personal/playdate/PlaydateSDK"
+export PLAYDATE_ARM_GCC="/home/dylan/projects/personal/playdate/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi"
+export CMAKE_C_COMPILER="/home/dylan/projects/personal/playdate/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-gcc"
+
+export PATH="$PATH:$PLAYDATE_SDK_PATH/bin"
+export PATH="$PATH:$PLAYDATE_ARM_GCC/bin"
+export PATH="$PATH:/home/dylan/Downloads/cmake-3.31.0-rc2-linux-x86_64/bin"
+export PATH="$PATH:/home/dylan/Downloads/"
+
+# sst
+export PATH=/home/dylan/.sst/bin:$PATH
