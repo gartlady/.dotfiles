@@ -1,6 +1,6 @@
 # Ignore all files in .local/share/fonts
-.local/share/fonts/*
-.config/nvim/lazy-lock.json
+env/.local/share/fonts/*
+env/.config/nvim/lazy-lock.json
 
 # Unignore the directory itself
-!.local/share/fonts/
+!env/.local/share/fonts/

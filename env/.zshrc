@@ -28,8 +28,7 @@ autoload -U compinit && compinit
 zinit cdreplay -q
 
 # Load nvim
-export PATH="$PATH:/opt/nvim-linux64/bin"
-
+export PATH=$PATH:/opt/nvim-linux64/bin
 export PATH=$PATH:/usr/local/go/bin
 export PATH=$PATH:$HOME/.local/bin
 
@@ -70,7 +69,7 @@ export FZF_DEFAULT_OPTS='--height 40% --layout reverse'
 eval "$(zoxide init zsh --cmd j)"
 
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin"
+export PATH=$HOME/.rvm/bin:$PATH
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -81,14 +80,12 @@ alias nvm="unalias nvm; [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"; nvm $@"
 bindkey '^[[1;5D' backward-word
 bindkey '^[[1;5C' forward-word
 
-export PLAYDATE_SDK_PATH="/home/dylan/projects/personal/playdate/PlaydateSDK"
-export PLAYDATE_ARM_GCC="/home/dylan/projects/personal/playdate/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi"
-export CMAKE_C_COMPILER="/home/dylan/projects/personal/playdate/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-gcc"
+export PLAYDATE_SDK_PATH="$HOME/projects/personal/playdate/PlaydateSDK"
+export PLAYDATE_ARM_GCC="$HOME/projects/personal/playdate/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi"
+export CMAKE_C_COMPILER="$HOME/projects/personal/playdate/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-gcc"
 
-export PATH="$PATH:$PLAYDATE_SDK_PATH/bin"
-export PATH="$PATH:$PLAYDATE_ARM_GCC/bin"
-export PATH="$PATH:/home/dylan/Downloads/cmake-3.31.0-rc2-linux-x86_64/bin"
-export PATH="$PATH:/home/dylan/Downloads/"
-
-# sst
-export PATH=/home/dylan/.sst/bin:$PATH
+export PATH=$PLAYDATE_SDK_PATH/bin:$PATH
+export PATH=$PLAYDATE_ARM_GCC/bin:$PATH
+export PATH=$HOME/Downloads/cmake-3.31.0-rc2-linux-x86_64/bin:$PATH
+export PATH=$HOME/Downloads:$PATH
+export PATH=$HOME/.sst/bin:$PATH
