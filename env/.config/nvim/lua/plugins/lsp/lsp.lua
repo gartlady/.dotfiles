@@ -111,40 +111,40 @@ return {
       on_attach = on_attach,
     })
 
-    lspconfig["clangd"].setup({
-      on_attach = on_attach,
-      capabilities = cmp_nvim_lsp.default_capabilities(),
-      root_dir = function(fname)
-        return require("lspconfig.util").root_pattern(
-          "Makefile",
-          "configure.ac",
-          "configure.in",
-          "config.h.in",
-          "meson.build",
-          "meson_options.txt",
-          "build.ninja"
-        )(fname) or require("lspconfig.util").root_pattern("compile_commands.json", "compile_flags.txt")(fname) or require(
-          "lspconfig.util"
-        ).find_git_ancestor(fname)
-      end,
-      cmd = {
-        "clangd",
-        "--background-index",
-        "--clang-tidy",
-        "--log=verbose",
-        "--header-insertion=iwyu",
-        "--completion-style=detailed",
-        "--function-arg-placeholders",
-        "--fallback-style=llvm",
-        "--query-driver=/home/dylan/projects/personal/playdate/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-gcc",
-      },
-      init_options = {
-        usePlaceholders = true,
-        completeUnimported = true,
-        clangdFileStatus = true,
-        fallbackFlags = { "-std=c++17" },
-      },
-    })
+    -- lspconfig["clangd"].setup({
+    --   on_attach = on_attach,
+    --   capabilities = cmp_nvim_lsp.default_capabilities(),
+    --   root_dir = function(fname)
+    --     return require("lspconfig.util").root_pattern(
+    --       "Makefile",
+    --       "configure.ac",
+    --       "configure.in",
+    --       "config.h.in",
+    --       "meson.build",
+    --       "meson_options.txt",
+    --       "build.ninja"
+    --     )(fname) or require("lspconfig.util").root_pattern("compile_commands.json", "compile_flags.txt")(fname) or require(
+    --       "lspconfig.util"
+    --     ).find_git_ancestor(fname)
+    --   end,
+    --   cmd = {
+    --     "clangd",
+    --     "--background-index",
+    --     "--clang-tidy",
+    --     "--log=verbose",
+    --     "--header-insertion=iwyu",
+    --     "--completion-style=detailed",
+    --     "--function-arg-placeholders",
+    --     "--fallback-style=llvm",
+    --     "--query-driver=/home/dylan/projects/personal/playdate/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-gcc",
+    --   },
+    --   init_options = {
+    --     usePlaceholders = true,
+    --     completeUnimported = true,
+    --     clangdFileStatus = true,
+    --     fallbackFlags = { "-std=c++17" },
+    --   },
+    -- })
 
     lspconfig["astro"].setup({
       capabilities = capabilities,
@@ -156,10 +156,10 @@ return {
       on_attach = on_attach,
     })
 
-    lspconfig["gopls"].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-    })
+    -- lspconfig["gopls"].setup({
+    --   capabilities = capabilities,
+    --   on_attach = on_attach,
+    -- })
 
     lspconfig["lua_ls"].setup({
       capabilities = capabilities,

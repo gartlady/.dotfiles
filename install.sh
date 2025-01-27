@@ -17,7 +17,7 @@ CHECK="${GREEN}[✓]${RESET}"
 CROSS="${RED}[✗]${RESET}"
 INFO="${CYAN}[ℹ]${RESET}"
 
-log() { echo -e "${1} ${2}"; }
+log() { echo -e "${1} ${2}" ${RESET}; }
 run_cmd() {
   log "${INFO}" "$1"
   eval "$2" &>/dev/null && log "${CHECK}" "$1 completed" || {
@@ -52,9 +52,10 @@ install_packages() {
 main() {
   log "${CYAN}" "Starting Environment Setup"
 
+  sudo add-apt-repository ppa:neovim-ppa/unstable
   install_packages
-  install_tool "Neovim" "command -v nvim" \
-    "curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz && sudo tar -C /opt -xzf nvim-linux64.tar.gz && rm nvim-linux64.tar.gz"
+  # install_tool "Neovim" "command -v nvim" \
+  #   "curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz && sudo tar -C /opt -xzf nvim-linux64.tar.gz && rm nvim-linux64.tar.gz"
   install_tool "JetBrains Mono Nerd Font" "fc-list | grep -qi 'JetBrainsMono'" \
     "wget -q -P $HOME/.local/share/fonts https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/JetBrainsMono.zip && unzip -q $HOME/.local/share/fonts/JetBrainsMono.zip -d $HOME/.local/share/fonts && fc-cache -fv && rm $HOME/.local/share/fonts/JetBrainsMono.zip"
   install_tool "fzf" "command -v fzf" \
