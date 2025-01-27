@@ -41,18 +41,24 @@ install_packages() {
     exit 1
   fi
 
-  log "${CYAN}" "Installing System Packages"
-  run_cmd "Updating package lists" "sudo apt-get update -y"
+  # log "${CYAN}" "Installing System Packages"
+  # run_cmd "Updating package lists" "sudo apt update -y"
 
   while IFS= read -r pkg; do
-    dpkg -s "$pkg" &>/dev/null || run_cmd "Installing $pkg" "sudo apt-get install -y $pkg"
+    dpkg -s "$pkg" &>/dev/null || run_cmd "Installing $pkg" "sudo apt install -y $pkg"
   done <"$PACKAGES_FILE"
 }
 
 main() {
   log "${CYAN}" "Starting Environment Setup"
 
-  sudo add-apt-repository ppa:neovim-ppa/unstable
+  log "${CYAN}" "Installing System Packages"
+  run_cmd "Updating package lists" "sudo apt update -y"
+
+  log "${CYAN}" "Installing software-properties-common"
+  run_cmd "software-properties-common" "sudo apt install -y software-properties-common"
+  run_cmd "adding neovim repository" "sudo add-apt-repository ppa:neovim-ppa/unstable"
+
   install_packages
   # install_tool "Neovim" "command -v nvim" \
   #   "curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz && sudo tar -C /opt -xzf nvim-linux64.tar.gz && rm nvim-linux64.tar.gz"
