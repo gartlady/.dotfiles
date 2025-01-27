@@ -110,7 +110,7 @@ install_dependencies() {
     exit 1
   fi
 
-  local packages=(stow zsh vim git jq unzip fontconfig wget curl)
+  local packages=(stow zsh vim git jq unzip fontconfig wget curl ripgrep)
   print_step "Installing system packages"
 
   for pkg in "${packages[@]}"; do
