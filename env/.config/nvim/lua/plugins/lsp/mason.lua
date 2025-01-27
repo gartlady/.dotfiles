@@ -23,7 +23,7 @@ return {
       "lua_ls",
       "jq",
       "jsonls",
-      "gopls",
+      -- "gopls",
       "biome",
       "ts_ls",
       "prettierd",

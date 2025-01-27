@@ -20,7 +20,7 @@ INFO="${CYAN}[ℹ]${RESET}"
 log() { echo -e "${1} ${2}" ${RESET}; }
 run_cmd() {
   log "${INFO}" "$1"
-  eval "$2" &>/dev/null && log "${CHECK}" "$1 completed" || {
+  eval "$2" &>/dev/null || {
     log "${CROSS}" "$1 failed"
     exit 1
   }
