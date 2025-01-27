@@ -1,5 +1,5 @@
 software-properties-common
-nvim
+neovim
 stow
 zsh
 vim

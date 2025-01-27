@@ -41,9 +41,6 @@ install_packages() {
     exit 1
   fi
 
-  # log "${CYAN}" "Installing System Packages"
-  # run_cmd "Updating package lists" "sudo apt update -y"
-
   while IFS= read -r pkg; do
     dpkg -s "$pkg" &>/dev/null || run_cmd "Installing $pkg" "sudo apt install -y $pkg"
   done <"$PACKAGES_FILE"
@@ -56,12 +53,10 @@ main() {
   run_cmd "Updating package lists" "sudo apt update -y"
 
   log "${CYAN}" "Installing software-properties-common"
-  run_cmd "software-properties-common" "sudo apt install -y software-properties-common"
-  run_cmd "adding neovim repository" "sudo add-apt-repository ppa:neovim-ppa/unstable"
+  run_cmd "Adding software-properties-common" "sudo apt install -y software-properties-common"
+  run_cmd "Adding neovim repository" "sudo add-apt-repository ppa:neovim-ppa/unstable"
 
   install_packages
-  # install_tool "Neovim" "command -v nvim" \
-  #   "curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz && sudo tar -C /opt -xzf nvim-linux64.tar.gz && rm nvim-linux64.tar.gz"
   install_tool "JetBrains Mono Nerd Font" "fc-list | grep -qi 'JetBrainsMono'" \
     "wget -q -P $HOME/.local/share/fonts https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/JetBrainsMono.zip && unzip -q $HOME/.local/share/fonts/JetBrainsMono.zip -d $HOME/.local/share/fonts && fc-cache -fv && rm $HOME/.local/share/fonts/JetBrainsMono.zip"
   install_tool "fzf" "command -v fzf" \
