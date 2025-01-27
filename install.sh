@@ -42,7 +42,7 @@ install_packages() {
   fi
 
   while IFS= read -r pkg; do
-    dpkg -s "$pkg" &>/dev/null || run_cmd "Installing $pkg" "sudo apt install -y $pkg"
+    dpkg -s "$pkg" &>/dev/null || run_cmd "Installing $pkg" "sudo DEBIAN_FRONTEND=noninteractive apt install -y $pkg --no-install-recommends"
   done <"$PACKAGES_FILE"
 }
 
@@ -50,11 +50,11 @@ main() {
   log "${CYAN}" "Starting Environment Setup"
 
   log "${CYAN}" "Installing System Packages"
-  run_cmd "Updating package lists" "sudo apt update -y"
+  run_cmd "Updating package lists" "sudo DEBIAN_FRONTEND=noninteractive apt update -y --no-install-recommends"
 
   log "${CYAN}" "Installing software-properties-common"
-  run_cmd "Adding software-properties-common" "sudo apt install -y software-properties-common"
-  run_cmd "Adding neovim repository" "sudo add-apt-repository ppa:neovim-ppa/unstable"
+  run_cmd "Adding software-properties-common" "sudo DEBIAN_FRONTEND=noninteractive apt install -y software-properties-common --no-install-recommends"
+  run_cmd "Adding neovim repository" "sudo DEBIAN_FRONTEND=noninteractive add-apt-repository ppa:neovim-ppa/unstable"
 
   install_packages
   install_tool "JetBrains Mono Nerd Font" "fc-list | grep -qi 'JetBrainsMono'" \
