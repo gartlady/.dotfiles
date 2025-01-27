@@ -110,7 +110,7 @@ install_dependencies() {
     exit 1
   fi
 
-  local packages=(stow zsh vim git jq unzip fontconfig)
+  local packages=(stow zsh vim git jq unzip fontconfig wget curl)
   print_step "Installing system packages"
 
   for pkg in "${packages[@]}"; do
@@ -126,10 +126,11 @@ install_dependencies() {
     fi
   done
 
-  check_and_install_neovim
-  install_fzf
   install_nerd_font
+  install_fzf
   install_zoxide
+  install_nvm
+  check_and_install_neovim
 }
 
 check_and_install_neovim() {
@@ -228,6 +229,25 @@ install_zoxide() {
     print_success "zoxide installed"
   else
     print_error "Failed to install zoxide"
+    exit 1
+  fi
+}
+
+install_nvm() {
+  print_step "Checking nvm installation"
+
+  if command -v nvm --version &>/dev/null; then
+    print_info "${CHECK} nvm is already installed"
+    return
+  fi
+
+  print_step "Installing nvm"
+
+  if run_step "Downloading nvm" \
+    "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash"; then
+    print_success "nvm installed"
+  else
+    print_error "Failed to install nvm"
     exit 1
   fi
 }
