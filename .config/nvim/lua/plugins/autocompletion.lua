@@ -62,6 +62,7 @@ return {
         { name = "luasnip" },
         { name = "path" },
         { name = "vim-dadbod-completion" },
+        { name = "ts_ls" },
       },
     })
   end,

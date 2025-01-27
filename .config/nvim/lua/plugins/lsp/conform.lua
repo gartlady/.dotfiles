@@ -14,6 +14,7 @@ return {
   opts = {},
   config = function()
     local conform = require("conform")
+
     conform.setup({
       formatters_by_ft = {
         lua = { "stylua" },
@@ -31,6 +32,7 @@ return {
         c = { "clang-format" },
         go = { "gofumpt", "gofmt", "goimports" },
         markdown = { "prettierd" },
+        sh = { "shfmt" },
       },
       format_on_save = {
         timeout_ms = 500,
