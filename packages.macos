@@ -9,3 +9,6 @@ fontconfig
 wget
 curl
 ripgrep
+fzf
+zoxide
+nvm

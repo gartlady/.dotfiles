@@ -61,7 +61,11 @@ install_packages() {
     ;;
   macos)
     while IFS= read -r pkg; do
-      brew list "$pkg" &>/dev/null || run_cmd "Installing $pkg" "brew install $pkg"
+      if brew info "$pkg" &>/dev/null; then
+        log "${CHECK}" "$pkg is already installed"
+      else
+        run_cmd "Installing $pkg" "brew install $pkg"
+      fi
     done <"$pkg_file"
     ;;
   esac
@@ -114,15 +118,9 @@ main() {
   ubuntu)
     install_tool "fzf" "command -v fzf" "git clone --depth 1 https://github.com/junegunn/fzf.git $HOME/.fzf && $HOME/.fzf/install --all --no-update-rc"
     install_tool "zoxide" "command -v zoxide" "curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh"
-    ;;
-  macos)
-    install_tool "fzf" "command -v fzf" "brew install fzf"
-    install_tool "zoxide" "command -v zoxide" "brew install zoxide"
+    install_tool "nvm" "command -v nvm" "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash"
     ;;
   esac
-
-  # Common installations
-  install_tool "nvm" "command -v nvm" "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash"
 
   # Stow dotfiles
   run_cmd "Stowing dotfiles" "cd $DOTFILES_DIR && stow -R -v -t ~ -d $DOTFILES_DIR/env ."
