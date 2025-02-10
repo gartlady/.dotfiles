@@ -61,7 +61,7 @@ install_packages() {
     ;;
   macos)
     while IFS= read -r pkg; do
-      if brew info "$pkg" &>/dev/null; then
+      if brew list "$pkg" &>/dev/null; then
         log "${CHECK}" "$pkg is already installed"
       else
         run_cmd "Installing $pkg" "brew install $pkg"
