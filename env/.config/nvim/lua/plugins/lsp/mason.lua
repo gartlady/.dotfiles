@@ -9,6 +9,13 @@ return {
     local mason_lspconfig = require("mason-lspconfig")
 
     mason.setup({
+      opts = {
+        setup = {
+          rust_analyzer = function()
+            return true
+          end,
+        },
+      },
       ui = {
         icons = {
           package_installed = "✓",

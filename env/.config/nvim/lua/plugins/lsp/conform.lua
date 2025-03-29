@@ -27,6 +27,7 @@ return {
         css = { "prettierd" },
         html = { "prettierd" },
         yaml = { "prettierd" },
+        sql = { "sleek" },
         -- cpp = { "clang-format" },
         -- h = { "clang-format" },
         -- c = { "clang-format" },
@@ -34,10 +35,10 @@ return {
         markdown = { "prettierd" },
         sh = { "shfmt" },
       },
-      format_on_save = {
-        timeout_ms = 500,
-        lsp_fallback = true,
-      },
+      -- format_on_save = {
+      --   timeout_ms = 500,
+      --   lsp_fallback = true,
+      -- },
     })
   end,
 }

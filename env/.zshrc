@@ -77,8 +77,8 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # Enable word-by-word navigation with Ctrl + Left/Right
-bindkey '^[[1;5D' backward-word
-bindkey '^[[1;5C' forward-word
+# bindkey '^[[1;5D' backward-word
+# bindkey '^[[1;5C' forward-word
 
 export PLAYDATE_SDK_PATH="$HOME/projects/personal/playdate/PlaydateSDK"
 export PLAYDATE_ARM_GCC="$HOME/projects/personal/playdate/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi"
@@ -89,3 +89,16 @@ export PATH=$PLAYDATE_ARM_GCC/bin:$PATH
 export PATH=$HOME/Downloads/cmake-3.31.0-rc2-linux-x86_64/bin:$PATH
 export PATH=$HOME/Downloads:$PATH
 export PATH=$HOME/.sst/bin:$PATH
+export PATH=/opt/homebrew/opt/libpq/bin:$PATH
+
+# The following lines have been added by Docker Desktop to enable Docker CLI completions.
+fpath=(/Users/dylan/.docker/completions $fpath)
+autoload -Uz compinit
+compinit
+# End of Docker CLI completions
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/dylan/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/dylan/Downloads/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/dylan/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/dylan/Downloads/google-cloud-sdk/completion.zsh.inc'; fi

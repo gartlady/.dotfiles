@@ -2,11 +2,15 @@ return {
   "neovim/nvim-lspconfig",
   event = { "BufReadPre", "BufNewFile" },
   dependencies = {
-    "hrsh7th/cmp-nvim-lsp",
+    -- "hrsh7th/cmp-nvim-lsp",
+    "saghen/blink.cmp",
+  },
+  opts = {
+    autoformat = false,
   },
   config = function()
     local lspconfig = require("lspconfig")
-    local cmp_nvim_lsp = require("cmp_nvim_lsp")
+    -- local cmp_nvim_lsp = require("cmp_nvim_lsp")
 
     local on_attach = function(client, bufnr)
       local map = function(keys, func, desc)
@@ -44,7 +48,8 @@ return {
       map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
     end
 
-    local capabilities = cmp_nvim_lsp.default_capabilities()
+    -- local capabilities = cmp_nvim_lsp.default_capabilities()
+    local capabilities = require('blink.cmp').get_lsp_capabilities()
 
     local signs = { Error = " ", Warn = " ", Hint = "󰠠 ", Info = " " }
     for type, icon in pairs(signs) do
@@ -156,10 +161,35 @@ return {
       on_attach = on_attach,
     })
 
-    -- lspconfig["gopls"].setup({
-    --   capabilities = capabilities,
-    --   on_attach = on_attach,
-    -- })
+    lspconfig["rust_analyzer"].setup({
+      -- on_attach = function(client, bufnr)
+      --   vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+      -- end,
+      on_attach = on_attach,
+      settings = {
+        ["rust-analyzer"] = {
+          imports = {
+            granularity = {
+              group = "module",
+            },
+            prefix = "self",
+          },
+          cargo = {
+            buildScripts = {
+              enable = true,
+            },
+          },
+          procMacro = {
+            enable = true,
+          },
+        },
+      },
+    })
+
+    lspconfig["gopls"].setup({
+      capabilities = capabilities,
+      on_attach = on_attach,
+    })
 
     lspconfig["lua_ls"].setup({
       capabilities = capabilities,

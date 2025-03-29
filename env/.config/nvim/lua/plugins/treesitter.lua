@@ -7,6 +7,7 @@ return {
       "bash",
       -- "c",
       -- "cpp",
+      "rust",
       "diff",
       "html",
       "lua",
