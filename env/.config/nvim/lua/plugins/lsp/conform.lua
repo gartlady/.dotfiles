@@ -27,7 +27,7 @@ return {
         css = { "prettierd" },
         html = { "prettierd" },
         yaml = { "prettierd" },
-        sql = { "sleek" },
+        sql = { "postgres_lsp", "sleek" },
         -- cpp = { "clang-format" },
         -- h = { "clang-format" },
         -- c = { "clang-format" },

@@ -49,7 +49,7 @@ return {
     end
 
     -- local capabilities = cmp_nvim_lsp.default_capabilities()
-    local capabilities = require('blink.cmp').get_lsp_capabilities()
+    local capabilities = require("blink.cmp").get_lsp_capabilities()
 
     local signs = { Error = " ", Warn = " ", Hint = "󰠠 ", Info = " " }
     for type, icon in pairs(signs) do
@@ -207,6 +207,11 @@ return {
           },
         },
       },
+    })
+
+    lspconfig["postgres_lsp"].setup({
+      capabilities = capabilities,
+      on_attach = on_attach,
     })
   end,
 }

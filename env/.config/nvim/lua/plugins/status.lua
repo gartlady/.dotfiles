@@ -5,7 +5,7 @@ return {
     dependencies = { "nvim-tree/nvim-web-devicons", "yavorski/lualine-macro-recording.nvim" },
     opts = {
       options = {
-        theme = "base16",
+        theme = "onedark",
         component_separators = { left = "", right = "" },
         section_separators = { left = "", right = "" },
       },
