@@ -80,9 +80,9 @@ export NVM_DIR="$HOME/.nvm"
 # bindkey '^[[1;5D' backward-word
 # bindkey '^[[1;5C' forward-word
 
-export PLAYDATE_SDK_PATH="$HOME/projects/personal/playdate/PlaydateSDK"
-export PLAYDATE_ARM_GCC="$HOME/projects/personal/playdate/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi"
-export CMAKE_C_COMPILER="$HOME/projects/personal/playdate/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-gcc"
+export PLAYDATE_SDK_PATH="$HOME/projects/playdate/PlaydateSDK"
+export PLAYDATE_ARM_GCC="$HOME/projects/playdate/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi"
+export CMAKE_C_COMPILER="$HOME/projects/playdate/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-gcc"
 
 export PATH=$PLAYDATE_SDK_PATH/bin:$PATH
 export PATH=$PLAYDATE_ARM_GCC/bin:$PATH
@@ -105,3 +105,5 @@ if [ -f '/Users/dylan/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '
 
 export GOPATH=$HOME/go
 export GOBIN=$GOPATH/bin
+
+export PATH=$PATH:~/zig

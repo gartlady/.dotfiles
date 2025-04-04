@@ -2,7 +2,6 @@ return {
   "neovim/nvim-lspconfig",
   event = { "BufReadPre", "BufNewFile" },
   dependencies = {
-    -- "hrsh7th/cmp-nvim-lsp",
     "saghen/blink.cmp",
   },
   opts = {
@@ -10,7 +9,6 @@ return {
   },
   config = function()
     local lspconfig = require("lspconfig")
-    -- local cmp_nvim_lsp = require("cmp_nvim_lsp")
 
     local on_attach = function(client, bufnr)
       local map = function(keys, func, desc)
@@ -116,40 +114,40 @@ return {
       on_attach = on_attach,
     })
 
-    -- lspconfig["clangd"].setup({
-    --   on_attach = on_attach,
-    --   capabilities = cmp_nvim_lsp.default_capabilities(),
-    --   root_dir = function(fname)
-    --     return require("lspconfig.util").root_pattern(
-    --       "Makefile",
-    --       "configure.ac",
-    --       "configure.in",
-    --       "config.h.in",
-    --       "meson.build",
-    --       "meson_options.txt",
-    --       "build.ninja"
-    --     )(fname) or require("lspconfig.util").root_pattern("compile_commands.json", "compile_flags.txt")(fname) or require(
-    --       "lspconfig.util"
-    --     ).find_git_ancestor(fname)
-    --   end,
-    --   cmd = {
-    --     "clangd",
-    --     "--background-index",
-    --     "--clang-tidy",
-    --     "--log=verbose",
-    --     "--header-insertion=iwyu",
-    --     "--completion-style=detailed",
-    --     "--function-arg-placeholders",
-    --     "--fallback-style=llvm",
-    --     "--query-driver=/home/dylan/projects/personal/playdate/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-gcc",
-    --   },
-    --   init_options = {
-    --     usePlaceholders = true,
-    --     completeUnimported = true,
-    --     clangdFileStatus = true,
-    --     fallbackFlags = { "-std=c++17" },
-    --   },
-    -- })
+    lspconfig["clangd"].setup({
+      on_attach = on_attach,
+      capabilities = capabilities,
+      root_dir = function(fname)
+        return require("lspconfig.util").root_pattern(
+          "Makefile",
+          "configure.ac",
+          "configure.in",
+          "config.h.in",
+          "meson.build",
+          "meson_options.txt",
+          "build.ninja"
+        )(fname) or require("lspconfig.util").root_pattern("compile_commands.json", "compile_flags.txt")(fname) or require(
+          "lspconfig.util"
+        ).find_git_ancestor(fname)
+      end,
+      cmd = {
+        "clangd",
+        "--background-index",
+        "--clang-tidy",
+        "--log=verbose",
+        "--header-insertion=iwyu",
+        "--completion-style=detailed",
+        "--function-arg-placeholders",
+        "--fallback-style=llvm",
+        "--query-driver=/home/dylan/projects/personal/playdate/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-gcc",
+      },
+      init_options = {
+        usePlaceholders = true,
+        completeUnimported = true,
+        clangdFileStatus = true,
+        fallbackFlags = { "-std=c++17" },
+      },
+    })
 
     lspconfig["astro"].setup({
       capabilities = capabilities,
@@ -162,9 +160,6 @@ return {
     })
 
     lspconfig["rust_analyzer"].setup({
-      -- on_attach = function(client, bufnr)
-      --   vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
-      -- end,
       on_attach = on_attach,
       settings = {
         ["rust-analyzer"] = {
@@ -189,6 +184,15 @@ return {
     lspconfig["gopls"].setup({
       capabilities = capabilities,
       on_attach = on_attach,
+    })
+
+    lspconfig["zls"].setup({
+      capabilities = capabilities,
+      on_attach = on_attach,
+      cmd = { "zls" },
+      filetypes = { "zig", "zir" },
+      root_dir = lspconfig.util.root_pattern("zls.json", "build.zig", ".git"),
+      single_file_support = true,
     })
 
     lspconfig["lua_ls"].setup({

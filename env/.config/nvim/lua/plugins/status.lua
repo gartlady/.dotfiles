@@ -2,10 +2,13 @@ return {
   {
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",
-    dependencies = { "nvim-tree/nvim-web-devicons", "yavorski/lualine-macro-recording.nvim" },
+    dependencies = {
+      "nvim-tree/nvim-web-devicons",
+      "yavorski/lualine-macro-recording.nvim",
+    },
     opts = {
       options = {
-        theme = "onedark",
+        theme = "horizon",
         component_separators = { left = "", right = "" },
         section_separators = { left = "", right = "" },
       },
