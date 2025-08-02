@@ -33,6 +33,7 @@ return {
         c = { "clang-format" },
         markdown = { "prettierd" },
         sh = { "shfmt" },
+        zig = { "zig fmt" },
       },
       -- format_on_save = {
       --   timeout_ms = 500,

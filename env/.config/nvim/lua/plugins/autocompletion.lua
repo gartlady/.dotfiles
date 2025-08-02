@@ -36,22 +36,27 @@ return {
 
       -- (Default) Only show the documentation popup when manually triggered
       completion = {
-        documentation = {
-          auto_show = true
+        ghost_text = {
+          enabled = false,
         },
-        list = {
-          selection = {
-            preselect = true,
-            auto_insert = true
-          }
-        }
+        menu = {
+          border = "rounded",
+          draw = {
+            columns = {
+              { "label", "label_description", gap = 2 },
+              { "kind_icon", "kind" },
+            },
+          },
+        },
+        documentation = { window = { border = "rounded" } },
       },
       -- Default list of enabled providers defined so that you can extend it
       -- elsewhere in your config, without redefining it, due to `opts_extend`
       sources = {
-        default = { "lsp", "path", "snippets", "buffer" },
+        -- default = { "lsp", "path", "snippets", "buffer" },
+        priority = { "lsp", "path", "snippets", "buffer" },
       },
-
+      --
       -- (Default) Rust fuzzy matcher for typo resistance and significantly better performance
       -- You may use a lua implementation instead by using `implementation = "lua"` or fallback to the lua implementation,
       -- when the Rust fuzzy matcher is not available, by using `implementation = "prefer_rust"`
@@ -59,6 +64,24 @@ return {
       -- See the fuzzy documentation for more information
       fuzzy = { implementation = "prefer_rust_with_warning" },
     },
-    opts_extend = { "sources.default" },
+    config = function(_, opts)
+      local original = require("blink.cmp.completion.list").show
+      ---@diagnostic disable-next-line: duplicate-set-field
+      require("blink.cmp.completion.list").show = function(ctx, items_by_source)
+        local seen = {}
+        local function filter(item)
+          if seen[item.label] then
+            return false
+          end
+          seen[item.label] = true
+          return true
+        end
+        for id in vim.iter(opts.sources.priority) do
+          items_by_source[id] = items_by_source[id] and vim.iter(items_by_source[id]):filter(filter):totable()
+        end
+        return original(ctx, items_by_source)
+      end
+      require("blink.cmp").setup(opts)
+    end,
   },
 }

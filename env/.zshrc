@@ -28,7 +28,7 @@ autoload -U compinit && compinit
 zinit cdreplay -q
 
 # Load nvim
-export PATH=$PATH:/opt/nvim-linux64/bin
+export PATH=$PATH:/opt/nvim-linux-x86_64/bin
 export PATH=$PATH:/usr/local/go/bin
 export PATH=$PATH:$HOME/.local/bin
 
@@ -106,4 +106,7 @@ if [ -f '/Users/dylan/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '
 export GOPATH=$HOME/go
 export GOBIN=$GOPATH/bin
 
-export PATH=$PATH:~/zig
+alias ase=/home/dylan/projects/aseprite/aseprite-release/bin/aseprite
+
+# opencode
+export PATH=/home/dylan/.opencode/bin:$PATH

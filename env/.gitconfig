@@ -5,3 +5,5 @@
 	editor = vim
 [pager]
 	branch = false
+[init]
+	defaultBranch = main
