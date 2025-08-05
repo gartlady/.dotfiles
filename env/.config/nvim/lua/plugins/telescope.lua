@@ -52,10 +52,12 @@ return {
       }))
     end, { desc = "[/] Fuzzily search in current buffer" })
 
+    local conf = require('telescope.config').values
     vim.keymap.set("n", "<leader>s/", function()
       builtin.live_grep({
         grep_open_files = true,
         prompt_title = "Live Grep in Open Files",
+        vimgrep_arguments = table.insert(conf.vimgrep_arguments, "--fixed-strings"),
       })
     end, { desc = "[S]earch [/] in Open Files" })
 
