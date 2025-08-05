@@ -106,12 +106,9 @@ if [ -f '/Users/dylan/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '
 export GOPATH=$HOME/go
 export GOBIN=$GOPATH/bin
 
-<<<<<<< Updated upstream
 alias ase=/home/dylan/projects/aseprite/aseprite-release/bin/aseprite
 
 # opencode
 export PATH=/home/dylan/.opencode/bin:$PATH
-=======
 export PATH=$PATH:~/zig
 export PATH=$PATH:$GOBIN
->>>>>>> Stashed changes
