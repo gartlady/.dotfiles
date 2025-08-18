@@ -1,6 +1,6 @@
 return {
   "neovim/nvim-lspconfig",
-  event = { "BufReadPre", "BufNewFile" },
+  event = { "VeryLazy", "BufReadPre", "BufNewFile" },
   dependencies = {
     "saghen/blink.cmp",
   },
@@ -55,64 +55,64 @@ return {
       vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
     end
 
-    lspconfig.tailwindcss.setup({
-      filetypes = {
-        "astro",
-        "astro-markdown",
-        "gohtml",
-        "gohtmltmpl",
-        "handlebars",
-        "hbs",
-        "html",
-        "html-eex",
-        "markdown",
-        "mdx",
-        "css",
-        "javascript",
-        "javascriptreact",
-        "rescript",
-        "typescript",
-        "typescriptreact",
-        "templ",
-      },
-      init_options = {
-        userLanguages = {
-          templ = "html",
-        },
-      },
-      on_attach = on_attach,
-      capabilities = capabilities,
-      settings = {
-        tailwindCSS = {
-          classAttributes = {
-            "class",
-            "className",
-            "textClassName",
-          },
-          experimental = {
-            classRegex = {
-              { "cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]" },
-              { "cx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)" },
-            },
-          },
-        },
-      },
-    })
+    -- lspconfig.tailwindcss.setup({
+    --   filetypes = {
+    --     -- "astro",
+    --     -- "astro-markdown",
+    --     "gohtml",
+    --     "gohtmltmpl",
+    --     "handlebars",
+    --     "hbs",
+    --     "html",
+    --     "html-eex",
+    --     "markdown",
+    --     "mdx",
+    --     "css",
+    --     "javascript",
+    --     "javascriptreact",
+    --     "rescript",
+    --     "typescript",
+    --     "typescriptreact",
+    --     "templ",
+    --   },
+    --   init_options = {
+    --     userLanguages = {
+    --       templ = "html",
+    --     },
+    --   },
+    --   on_attach = on_attach,
+    --   capabilities = capabilities,
+    --   settings = {
+    --     tailwindCSS = {
+    --       classAttributes = {
+    --         "class",
+    --         "className",
+    --         "textClassName",
+    --       },
+    --       experimental = {
+    --         classRegex = {
+    --           { "cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]" },
+    --           { "cx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)" },
+    --         },
+    --       },
+    --     },
+    --   },
+    -- })
 
-    lspconfig["html"].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-    })
-
-    lspconfig["ts_ls"].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-    })
-
-    lspconfig["cssls"].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-    })
+    -- lspconfig["html"].setup({
+    --   capabilities = capabilities,
+    --   on_attach = on_attach,
+    -- })
+    --
+    -- lspconfig["ts_ls"].setup({
+    --   capabilities = capabilities,
+    --   on_attach = on_attach,
+    -- })
+    --
+    -- lspconfig["cssls"].setup({
+    --   capabilities = capabilities,
+    --   on_attach = on_attach,
+    -- })
 
     lspconfig["clangd"].setup({
       on_attach = on_attach,
@@ -147,11 +147,6 @@ return {
         clangdFileStatus = true,
         fallbackFlags = { "-std=c++17" },
       },
-    })
-
-    lspconfig["astro"].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
     })
 
     lspconfig["jsonls"].setup({
