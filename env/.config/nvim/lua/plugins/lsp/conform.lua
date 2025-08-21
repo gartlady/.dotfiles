@@ -31,14 +31,9 @@ return {
         cpp = { "clang-format" },
         h = { "clang-format" },
         c = { "clang-format" },
-        markdown = { "prettierd" },
         sh = { "shfmt" },
         zig = { "zig fmt" },
       },
-      -- format_on_save = {
-      --   timeout_ms = 500,
-      --   lsp_fallback = true,
-      -- },
     })
   end,
 }

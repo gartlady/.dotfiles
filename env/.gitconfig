@@ -1,9 +1,0 @@
-[user]
-	email = dylaangartland@gmail.com
-	name = gartlady
-[core]
-	editor = vim
-[pager]
-	branch = false
-[init]
-	defaultBranch = main

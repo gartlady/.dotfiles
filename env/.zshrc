@@ -69,16 +69,9 @@ export FZF_DEFAULT_OPTS='--height 40% --layout reverse'
 # Load zoxide
 eval "$(zoxide init zsh --cmd j)"
 
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH=$HOME/.rvm/bin:$PATH
-
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-# Enable word-by-word navigation with Ctrl + Left/Right
-# bindkey '^[[1;5D' backward-word
-# bindkey '^[[1;5C' forward-word
+[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
 export PLAYDATE_SDK_PATH="$HOME/projects/playdate/PlaydateSDK"
 export PLAYDATE_ARM_GCC="$HOME/projects/playdate/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi"
@@ -96,12 +89,6 @@ fpath=(/Users/dylan/.docker/completions $fpath)
 autoload -Uz compinit
 compinit
 # End of Docker CLI completions
-
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/dylan/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/dylan/Downloads/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/Users/dylan/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/dylan/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
 
 export GOPATH=$HOME/go
 export GOBIN=$GOPATH/bin

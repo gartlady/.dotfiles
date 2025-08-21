@@ -5,9 +5,8 @@ return {
   opts = {
     ensure_installed = {
       "bash",
-      -- "c",
-      -- "cpp",
-      "rust",
+      "c",
+      "cpp",
       "diff",
       "html",
       "lua",

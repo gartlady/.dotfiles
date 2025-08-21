@@ -54,7 +54,7 @@ return {
       -- elsewhere in your config, without redefining it, due to `opts_extend`
       sources = {
         default = { "lsp", "path", "snippets", "buffer" },
-        priority = { "lsp", "path", "snippets", "buffer" },
+        -- priority = { "lsp", "path", "snippets", "buffer" },
       },
       --
       -- (Default) Rust fuzzy matcher for typo resistance and significantly better performance
@@ -76,7 +76,7 @@ return {
           seen[item.label] = true
           return true
         end
-        for id in vim.iter(opts.sources.priority) do
+        for id in vim.iter(opts.sources.default) do
           items_by_source[id] = items_by_source[id] and vim.iter(items_by_source[id]):filter(filter):totable()
         end
         return original(ctx, items_by_source)

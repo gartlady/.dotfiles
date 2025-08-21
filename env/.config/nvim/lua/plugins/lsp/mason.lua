@@ -9,13 +9,7 @@ return {
     local mason_lspconfig = require("mason-lspconfig")
 
     mason.setup({
-      opts = {
-        setup = {
-          rust_analyzer = function()
-            return true
-          end,
-        },
-      },
+      opts = {},
       ui = {
         icons = {
           package_installed = "✓",
@@ -31,14 +25,6 @@ return {
       "jq",
       "jsonls",
       "gopls",
-      "biome",
-      -- "ts_ls",
-      -- "prettierd",
-      -- "astro",
-      -- "cssls",
-      -- "html",
-      -- "tailwindcss",
-      "markdownlint",
     }
     require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 

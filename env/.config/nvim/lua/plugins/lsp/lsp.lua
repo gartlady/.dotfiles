@@ -10,7 +10,7 @@ return {
   config = function()
     local lspconfig = require("lspconfig")
 
-    local on_attach = function(client, bufnr)
+    local on_attach = function(_, bufnr)
       local map = function(keys, func, desc)
         vim.keymap.set("n", keys, func, { buffer = bufnr, desc = "LSP: " .. desc })
       end
@@ -46,7 +46,6 @@ return {
       map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
     end
 
-    -- local capabilities = cmp_nvim_lsp.default_capabilities()
     local capabilities = require("blink.cmp").get_lsp_capabilities()
 
     local signs = { Error = " ", Warn = " ", Hint = "󰠠 ", Info = " " }
@@ -55,66 +54,7 @@ return {
       vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
     end
 
-    -- lspconfig.tailwindcss.setup({
-    --   filetypes = {
-    --     -- "astro",
-    --     -- "astro-markdown",
-    --     "gohtml",
-    --     "gohtmltmpl",
-    --     "handlebars",
-    --     "hbs",
-    --     "html",
-    --     "html-eex",
-    --     "markdown",
-    --     "mdx",
-    --     "css",
-    --     "javascript",
-    --     "javascriptreact",
-    --     "rescript",
-    --     "typescript",
-    --     "typescriptreact",
-    --     "templ",
-    --   },
-    --   init_options = {
-    --     userLanguages = {
-    --       templ = "html",
-    --     },
-    --   },
-    --   on_attach = on_attach,
-    --   capabilities = capabilities,
-    --   settings = {
-    --     tailwindCSS = {
-    --       classAttributes = {
-    --         "class",
-    --         "className",
-    --         "textClassName",
-    --       },
-    --       experimental = {
-    --         classRegex = {
-    --           { "cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]" },
-    --           { "cx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)" },
-    --         },
-    --       },
-    --     },
-    --   },
-    -- })
-
-    -- lspconfig["html"].setup({
-    --   capabilities = capabilities,
-    --   on_attach = on_attach,
-    -- })
-    --
-    -- lspconfig["ts_ls"].setup({
-    --   capabilities = capabilities,
-    --   on_attach = on_attach,
-    -- })
-    --
-    -- lspconfig["cssls"].setup({
-    --   capabilities = capabilities,
-    --   on_attach = on_attach,
-    -- })
-
-    lspconfig["clangd"].setup({
+     lspconfig["clangd"].setup({
       on_attach = on_attach,
       capabilities = capabilities,
       root_dir = function(fname)
@@ -152,28 +92,6 @@ return {
     lspconfig["jsonls"].setup({
       capabilities = capabilities,
       on_attach = on_attach,
-    })
-
-    lspconfig["rust_analyzer"].setup({
-      on_attach = on_attach,
-      settings = {
-        ["rust-analyzer"] = {
-          imports = {
-            granularity = {
-              group = "module",
-            },
-            prefix = "self",
-          },
-          cargo = {
-            buildScripts = {
-              enable = true,
-            },
-          },
-          procMacro = {
-            enable = true,
-          },
-        },
-      },
     })
 
     lspconfig["gopls"].setup({
