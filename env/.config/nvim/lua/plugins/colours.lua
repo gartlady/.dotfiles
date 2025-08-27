@@ -5,7 +5,6 @@ return {
     config = function()
       require("onedark").setup({
         style = "darker",
-        -- style = "dark",
       })
       require("onedark").load()
     end,

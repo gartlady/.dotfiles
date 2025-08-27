@@ -27,6 +27,19 @@ return {
         ["ui-select"] = {
           require("telescope.themes").get_dropdown(),
         },
+        "fzf",
+      },
+      pickers = {
+        live_grep = {
+          file_ignore_patterns = { "node_modules", ".git", ".venv" },
+          additional_args = function(_)
+            return { "--hidden" }
+          end,
+        },
+        find_files = {
+          file_ignore_patterns = { "node_modules", ".git", ".venv" },
+          hidden = true,
+        },
       },
     })
 
@@ -45,6 +58,23 @@ return {
     vim.keymap.set("n", "<leader>s.", builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
     vim.keymap.set("n", "<leader><leader>", builtin.buffers, { desc = "[ ] Find existing buffers" })
 
+    -- @TODO: Implement more
+    -- keys = {
+    --     { "<leader>/",  '<cmd>Telescope current_buffer_fuzzy_find<cr>', desc = "Buffer search", },
+    --     { "<leader>fb", '<cmd>Telescope buffers<cr>',                   desc = "Buffers", },
+    --     { "<leader>fc", '<cmd>Telescope git_commits<cr>',               desc = "Commits", },
+    --     { "<leader>ff", '<cmd>Telescope find_files<cr>',                desc = "Find All Files", },
+    --     { "<C-p>",      '<cmd>Telescope git_files<cr>',                 desc = "Git files", },
+    --     { "<leader>fh", '<cmd>Telescope help_tags<cr>',                 desc = "Help", },
+    --     { "<leader>fj", '<cmd>Telescope command_history<cr>',           desc = "History", },
+    --     { "<leader>fk", '<cmd>Telescope keymaps<cr>',                   desc = "Keymaps", },
+    --     { "<leader>fl", '<cmd>Telescope lsp_references<cr>',            desc = "Lsp References", },
+    --     { "<leader>fo", '<cmd>Telescope oldfiles<cr>',                  desc = "Old files", },
+    --     { "<leader>fr", '<cmd>Telescope live_grep<cr>',                 desc = "Ripgrep", },
+    --     { "<leader>fs", '<cmd>Telescope grep_string<cr>',               desc = "Grep String", },
+    --     { "<leader>ft", '<cmd>Telescope treesitter<cr>',                desc = "Treesitter", },
+    -- },
+    --
     vim.keymap.set("n", "<leader>/", function()
       builtin.current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
         winblend = 10,
@@ -52,7 +82,7 @@ return {
       }))
     end, { desc = "[/] Fuzzily search in current buffer" })
 
-    local conf = require('telescope.config').values
+    local conf = require("telescope.config").values
     vim.keymap.set("n", "<leader>s/", function()
       builtin.live_grep({
         grep_open_files = true,

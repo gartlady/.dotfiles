@@ -54,7 +54,7 @@ return {
       vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
     end
 
-     lspconfig["clangd"].setup({
+    lspconfig["clangd"].setup({
       on_attach = on_attach,
       capabilities = capabilities,
       root_dir = function(fname)
