@@ -31,7 +31,7 @@ return {
         cpp = { "clang-format" },
         h = { "clang-format" },
         c = { "clang-format" },
-        sh = { "shfmt" },
+        sh = { "shfmt", "beautysh" },
         zig = { "zig fmt" },
       },
     })

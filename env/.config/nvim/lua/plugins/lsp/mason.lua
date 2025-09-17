@@ -6,7 +6,6 @@ return {
   },
   config = function()
     local mason = require("mason")
-    local mason_lspconfig = require("mason-lspconfig")
 
     mason.setup({
       opts = {},
@@ -27,9 +26,5 @@ return {
       "gopls",
     }
     require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
-
-    mason_lspconfig.setup({
-      automatic_installaion = true,
-    })
   end,
 }

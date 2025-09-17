@@ -1,6 +1,6 @@
 return {
   "neovim/nvim-lspconfig",
-  event = { "VeryLazy", "BufReadPre", "BufNewFile" },
+  event = { "BufReadPre", "BufNewFile" },
   dependencies = {
     "saghen/blink.cmp",
   },
@@ -16,7 +16,9 @@ return {
       end
 
       -- Jump to the definition of the word under your cursor.
-      map("gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
+      map("gd", function()
+        require("telescope.builtin").lsp_definitions()
+      end, "[G]oto [D]efinition")
 
       -- Find references for the word under your cursor.
       map("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
@@ -96,9 +98,11 @@ return {
 
     lspconfig["gopls"].setup({
       capabilities = capabilities,
-      on_attach = on_attach,
+      on_attach = function(client, bufnr)
+        print("gopls attached to buffer " .. bufnr .. " (client id: " .. client.id .. ")")
+        on_attach(client, bufnr)
+      end,
     })
-
     lspconfig["zls"].setup({
       capabilities = capabilities,
       on_attach = on_attach,
