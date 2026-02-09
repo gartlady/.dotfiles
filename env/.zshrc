@@ -99,3 +99,10 @@ alias ase=/home/dylan/projects/aseprite/aseprite-release/bin/aseprite
 export PATH=/home/dylan/.opencode/bin:$PATH
 export PATH=$PATH:~/zig
 export PATH=$PATH:$GOBIN
+
+# bun completions
+[ -s "/Users/dylan/.bun/_bun" ] && source "/Users/dylan/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"

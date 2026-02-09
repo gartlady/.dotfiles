@@ -8,7 +8,8 @@ return {
     autoformat = false,
   },
   config = function()
-    local lspconfig = require("lspconfig")
+    local blink = require("blink.cmp")
+    local capabilities = blink.get_lsp_capabilities()
 
     local on_attach = function(_, bufnr)
       local map = function(keys, func, desc)
@@ -19,44 +20,25 @@ return {
       map("gd", function()
         require("telescope.builtin").lsp_definitions()
       end, "[G]oto [D]efinition")
-
-      -- Find references for the word under your cursor.
       map("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
-
-      -- Jump to the implementation of the word under your cursor.
       map("gI", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
-
-      -- Jump to the type of the word under your cursor.
       map("<leader>D", require("telescope.builtin").lsp_type_definitions, "Type [D]efinition")
-
-      -- Fuzzy find all the symbols in your current document.
       map("<leader>ds", require("telescope.builtin").lsp_document_symbols, "[D]ocument [S]ymbols")
-
-      -- Fuzzy find all the symbols in your current workspace.
       map("<leader>ws", require("telescope.builtin").lsp_dynamic_workspace_symbols, "[W]orkspace [S]ymbols")
-
-      -- Rename the variable under your cursor.
       map("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
-
-      -- Execute a code action, usually your cursor needs to be on top of an error
-      -- or a suggestion from your LSP for this to activate.
       map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
-
-      -- Opens a popup that displays documentation about the word under your cursor
       map("K", vim.lsp.buf.hover, "Hover Documentation")
-
       map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
     end
 
-    local capabilities = require("blink.cmp").get_lsp_capabilities()
-
+    -- Diagnostic signs
     local signs = { Error = " ", Warn = " ", Hint = "󰠠 ", Info = " " }
     for type, icon in pairs(signs) do
       local hl = "DiagnosticSign" .. type
       vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
     end
 
-    lspconfig["clangd"].setup({
+    vim.lsp.config("clangd", {
       on_attach = on_attach,
       capabilities = capabilities,
       root_dir = function(fname)
@@ -72,17 +54,20 @@ return {
           "lspconfig.util"
         ).find_git_ancestor(fname)
       end,
-      cmd = {
-        "clangd",
-        "--background-index",
-        "--clang-tidy",
-        "--log=verbose",
-        "--header-insertion=iwyu",
-        "--completion-style=detailed",
-        "--function-arg-placeholders",
-        "--fallback-style=llvm",
-        "--query-driver=/home/dylan/projects/personal/playdate/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-gcc",
-      },
+      -- dynamically modify command for this workspace
+      on_new_config = function(new_config, new_root_dir)
+        new_config.cmd = vim.list_extend({
+          "clangd",
+          "--background-index",
+          "--clang-tidy",
+          "--log=verbose",
+          "--header-insertion=iwyu",
+          "--completion-style=detailed",
+          "--function-arg-placeholders",
+          "--fallback-style=llvm",
+          "--query-driver=/home/dylan/projects/personal/playdate/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-gcc",
+        }, new_config.cmd or {})
+      end,
       init_options = {
         usePlaceholders = true,
         completeUnimported = true,
@@ -90,36 +75,56 @@ return {
         fallbackFlags = { "-std=c++17" },
       },
     })
+    vim.lsp.enable("clangd")
 
-    lspconfig["jsonls"].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-    })
+    -- jsonls
+    vim.lsp.config("jsonls", { capabilities = capabilities, on_attach = on_attach })
+    vim.lsp.enable("jsonls")
 
-    lspconfig["gopls"].setup({
+    -- === gopls with workspace-aware enhancements ===
+    vim.lsp.config("gopls", {
       capabilities = capabilities,
       on_attach = function(client, bufnr)
         print("gopls attached to buffer " .. bufnr .. " (client id: " .. client.id .. ")")
         on_attach(client, bufnr)
       end,
+      settings = {
+        gopls = {
+          analyses = {
+            unusedparams = true,
+            nilness = true,
+            shadow = true,
+          },
+          staticcheck = true,
+        },
+      },
+      on_new_config = function(new_config, root_dir)
+        new_config.init_options = new_config.init_options or {}
+        new_config.init_options.env = vim.tbl_extend("force", new_config.init_options.env or {}, {
+          GOFLAGS = "-tags=integration",
+        })
+      end,
     })
-    lspconfig["zls"].setup({
+    vim.lsp.enable("gopls")
+
+    -- zls
+    vim.lsp.config("zls", {
       capabilities = capabilities,
       on_attach = on_attach,
       cmd = { "/usr/local/bin/zls" },
       filetypes = { "zig", "zir" },
-      root_dir = lspconfig.util.root_pattern("zls.json", "build.zig", ".git"),
+      root_dir = require("lspconfig.util").root_pattern("zls.json", "build.zig", ".git"),
       single_file_support = true,
     })
+    vim.lsp.enable("zls")
 
-    lspconfig["lua_ls"].setup({
+    -- lua_ls
+    vim.lsp.config("lua_ls", {
       capabilities = capabilities,
       on_attach = on_attach,
       settings = {
         Lua = {
-          diagnostics = {
-            globals = { "vim" },
-          },
+          diagnostics = { globals = { "vim" } },
           workspace = {
             library = {
               [vim.fn.expand("$VIMRUNTIME/lua")] = true,
@@ -129,10 +134,10 @@ return {
         },
       },
     })
+    vim.lsp.enable("lua_ls")
 
-    lspconfig["postgres_lsp"].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-    })
+    -- postgres_lsp
+    vim.lsp.config("postgres_lsp", { capabilities = capabilities, on_attach = on_attach })
+    vim.lsp.enable("postgres_lsp")
   end,
 }
