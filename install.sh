@@ -20,7 +20,13 @@ INFO="${CYAN}[ℹ]${RESET}"
 detect_os() {
   case "$OSTYPE" in
   darwin*) OS="macos" ;;
-  linux*) OS="ubuntu" ;;
+  linux*)
+    if [[ -f /etc/arch-release ]]; then
+      OS="arch"
+    else
+      OS="ubuntu"
+    fi
+    ;;
   *)
     log "${CROSS}" "Unsupported OS"
     exit 1
@@ -29,6 +35,7 @@ detect_os() {
 }
 
 log() { echo -e "${1} ${2}" ${RESET}; }
+
 run_cmd() {
   log "${INFO}" "$1"
   eval "$2" &>/dev/null || {
@@ -56,15 +63,38 @@ install_packages() {
   case "$OS" in
   ubuntu)
     while IFS= read -r pkg; do
+      [[ -z "$pkg" || "$pkg" =~ ^# ]] && continue
       dpkg -s "$pkg" &>/dev/null || run_cmd "Installing $pkg" "sudo DEBIAN_FRONTEND=noninteractive apt install -y $pkg --no-install-recommends"
     done <"$pkg_file"
     ;;
   macos)
     while IFS= read -r pkg; do
+      [[ -z "$pkg" || "$pkg" =~ ^# ]] && continue
       if brew list "$pkg" &>/dev/null; then
         log "${CHECK}" "$pkg is already installed"
       else
         run_cmd "Installing $pkg" "brew install $pkg"
+      fi
+    done <"$pkg_file"
+    ;;
+  arch)
+    setup_yay
+    while IFS= read -r pkg; do
+      [[ -z "$pkg" || "$pkg" =~ ^# ]] && continue
+
+      if [[ "$pkg" == AUR:* ]]; then
+        aur_pkg="${pkg#AUR:}"
+        if ! pacman -Qi "$aur_pkg" &>/dev/null && ! yay -Qi "$aur_pkg" &>/dev/null; then
+          run_cmd "Installing $aur_pkg (AUR)" "yay -S --noconfirm $aur_pkg"
+        else
+          log "${CHECK}" "$aur_pkg is already installed"
+        fi
+      else
+        if ! pacman -Qi "$pkg" &>/dev/null; then
+          run_cmd "Installing $pkg" "sudo pacman -S --noconfirm --needed $pkg"
+        else
+          log "${CHECK}" "$pkg is already installed"
+        fi
       fi
     done <"$pkg_file"
     ;;
@@ -74,8 +104,13 @@ install_packages() {
 setup_brew() {
   if ! command -v brew &>/dev/null; then
     NONINTERACTIVE=1 env /bin/bash -c "$(sudo curl -sSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    # Add Homebrew to PATH
     eval "$(/usr/local/bin/brew shellenv)"
+  fi
+}
+
+setup_yay() {
+  if ! command -v yay &>/dev/null; then
+    run_cmd "Installing yay (AUR helper)" "sudo pacman -S --noconfirm --needed git base-devel && git clone https://aur.archlinux.org/yay.git /tmp/yay && cd /tmp/yay && makepkg -si --noconfirm && cd - && rm -rf /tmp/yay"
   fi
 }
 
@@ -96,6 +131,10 @@ main() {
     setup_brew
     run_cmd "Updating Homebrew" "brew update"
     ;;
+  arch)
+    log "${CYAN}" "Updating Arch packages"
+    run_cmd "Updating pacman" "sudo pacman -Syu --noconfirm"
+    ;;
   esac
 
   log "${CYAN}" "Installing System Packages"
@@ -112,19 +151,10 @@ main() {
   fi
   install_tool "JetBrains Mono Nerd Font" "$font_check" "$font_install"
 
-  # Tool installations
-  log "${CYAN}" "Installing Development Tools"
-  case "$OS" in
-  ubuntu)
-    install_tool "fzf" "command -v fzf" "git clone --depth 1 https://github.com/junegunn/fzf.git $HOME/.fzf && $HOME/.fzf/install --all --no-update-rc"
-    install_tool "zoxide" "command -v zoxide" "curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh"
-    install_tool "nvm" "command -v nvm" "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash"
-    ;;
-  esac
-
   # Stow dotfiles
   run_cmd "Stowing dotfiles" "cd $DOTFILES_DIR && stow -R -v -t ~ -d $DOTFILES_DIR/env ."
   log "${GREEN}" "Environment setup completed successfully!"
 }
 
 main
+

@@ -1,0 +1,15 @@
+base-devel
+neovim
+stow
+zsh
+vim
+git
+jq
+unzip
+fontconfig
+wget
+curl
+ripgrep
+fzf
+AUR:zoxide
+AUR:nvm
