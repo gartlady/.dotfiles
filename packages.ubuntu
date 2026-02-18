@@ -1,7 +1,6 @@
 build-essential
 neovim
 stow
-zsh
 fish
 vim
 git
@@ -11,3 +10,4 @@ fontconfig
 wget
 curl
 ripgrep
+fzf

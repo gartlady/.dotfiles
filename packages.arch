@@ -1,7 +1,6 @@
 base-devel
 neovim
 stow
-zsh
 fish
 vim
 git

@@ -62,6 +62,11 @@ return {
       end,
       -- dynamically modify command for this workspace
       on_new_config = function(new_config, new_root_dir)
+        local gcc_path = os.getenv("PLAYDATE_ARM_GCC") or ""
+        local query_driver = gcc_path ~= "" and
+          (gcc_path .. "/bin/arm-none-eabi-gcc") or
+          "arm-none-eabi-gcc"
+
         new_config.cmd = vim.list_extend({
           "clangd",
           "--background-index",
@@ -71,7 +76,7 @@ return {
           "--completion-style=detailed",
           "--function-arg-placeholders",
           "--fallback-style=llvm",
-          "--query-driver=/home/dylan/projects/personal/playdate/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-gcc",
+          "--query-driver=" .. query_driver,
         }, new_config.cmd or {})
       end,
       init_options = {
