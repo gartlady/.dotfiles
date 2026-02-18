@@ -73,9 +73,6 @@ end
 # NVM
 set -gx NVM_DIR "$HOME/.nvm"
 
-# Bun
-set -gx BUN_INSTALL "$HOME/.bun"
-
 # Fish features configuration
 # Enable fish shell features
 set -g fish_greeting ""  # Disable welcome message
@@ -157,11 +154,6 @@ if set -q HOMEBREW_PREFIX
     if test -f "$HOMEBREW_PREFIX/opt/nvm/etc/bash_completion.d/nvm"
         bass source "$HOMEBREW_PREFIX/opt/nvm/etc/bash_completion.d/nvm"
     end
-end
-
-# Bun completions
-if test -f "$HOME/.bun/_bun"
-    source "$HOME/.bun/_bun"
 end
 
 # Custom prompt to match zsh style exactly
