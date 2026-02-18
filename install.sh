@@ -140,6 +140,34 @@ main() {
   log "${CYAN}" "Installing System Packages"
   install_packages
 
+  # Set fish as default shell (with confirmation)
+  if command -v fish &>/dev/null; then
+    # Get login shell (cross-platform)
+    if [[ "$OS" == "macos" ]]; then
+      local login_shell=$(dscl . -read /Users/$USER UserShell 2>/dev/null | awk '{print $2}' | xargs basename)
+    else
+      local login_shell=$(getent passwd $USER 2>/dev/null | cut -d: -f7 | xargs basename)
+    fi
+    
+    if [[ "$login_shell" != "fish" ]]; then
+      log "${INFO}" "Fish is installed but not your default shell (currently: $login_shell)"
+      read -p "Would you like to set fish as your default shell? (y/n) " -n 1 -r
+      echo
+      if [[ $REPLY =~ ^[Yy]$ ]]; then
+        local fish_path=$(command -v fish)
+        if chsh -s "$fish_path" 2>/dev/null || sudo chsh -s "$fish_path" "$USER" 2>/dev/null; then
+          log "${CHECK}" "Fish set as default shell. Please log out and back in for changes to take effect."
+        else
+          log "${CROSS}" "Failed to set fish as default shell. You can do it manually with: chsh -s $(command -v fish)"
+        fi
+      else
+        log "${INFO}" "Keeping $login_shell as default shell. You can switch to fish anytime by running 'fish'."
+      fi
+    else
+      log "${CHECK}" "Fish is already your default shell"
+    fi
+  fi
+
   # Font installation
   log "${CYAN}" "Installing JetBrains Mono Nerd Font"
   if [[ "$OS" == "macos" ]]; then

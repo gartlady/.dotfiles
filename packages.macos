@@ -1,6 +1,7 @@
 neovim
 stow
 zsh
+fish
 vim
 git
 jq
