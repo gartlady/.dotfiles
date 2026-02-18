@@ -139,10 +139,6 @@ function ase --description 'Launch Aseprite'
 end
 
 # Initialize tools
-if type -q mise
-    mise activate fish | source
-end
-
 if type -q zoxide
     zoxide init fish --cmd j | source
 end
