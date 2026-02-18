@@ -2,7 +2,7 @@
 return {
   "nvim-telescope/telescope.nvim",
   event = "VimEnter",
-  branch = "0.1.x",
+  tag = "v0.2.1",
   dependencies = {
     "nvim-lua/plenary.nvim",
     {
@@ -84,10 +84,12 @@ return {
 
     local conf = require("telescope.config").values
     vim.keymap.set("n", "<leader>s/", function()
+      local vimgrep_args = vim.deepcopy(conf.vimgrep_arguments)
+      table.insert(vimgrep_args, "--fixed-strings")
       builtin.live_grep({
         grep_open_files = true,
         prompt_title = "Live Grep in Open Files",
-        vimgrep_arguments = table.insert(conf.vimgrep_arguments, "--fixed-strings"),
+        vimgrep_arguments = vimgrep_args,
       })
     end, { desc = "[S]earch [/] in Open Files" })
 
