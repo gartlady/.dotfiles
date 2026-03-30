@@ -24,6 +24,7 @@ return {
       "jq",
       "jsonls",
       "gopls",
+      "clangd",
     }
     require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
   end,
