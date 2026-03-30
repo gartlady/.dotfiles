@@ -1,4 +1,4 @@
 return {
-  "benomahony/oil-git.nvim",
-  dependencies = { "stevearc/oil.nvim" },
+  -- "benomahony/oil-git.nvim",
+  -- dependencies = { "stevearc/oil.nvim" },
 }
