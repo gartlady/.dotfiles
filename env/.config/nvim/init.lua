@@ -1,6 +1,6 @@
 vim.pack.add({
-  "https://github.com/saghen/blink.compat",
-  "https://github.com/saghen/blink.cmp",
+  { src = "https://github.com/saghen/blink.compat", version = vim.version.range("1.*") },
+  { src = "https://github.com/saghen/blink.cmp", version = vim.version.range("1.*") },
   "https://github.com/nvim-treesitter/nvim-treesitter",
   "https://github.com/nvim-treesitter/nvim-treesitter-context",
   "https://github.com/nvim-telescope/telescope.nvim",
@@ -25,7 +25,6 @@ vim.pack.add({
   "https://github.com/nvim-lualine/lualine.nvim",
   "https://github.com/yavorski/lualine-macro-recording.nvim",
   "https://github.com/navarasu/onedark.nvim",
-  "https://github.com/numToStr/Comment.nvim",
   "https://github.com/echasnovski/mini.nvim",
   "https://github.com/echasnovski/mini.icons",
 })
@@ -88,8 +87,12 @@ vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 
-vim.keymap.set("n", "[d", function() vim.diagnostic.jump({count=-1}) end, { desc = "Go to previous [D]iagnostic message" })
-vim.keymap.set("n", "]d", function() vim.diagnostic.jump({count=1}) end, { desc = "Go to next [D]iagnostic message" })
+vim.keymap.set("n", "[d", function()
+  vim.diagnostic.jump({ count = -1 })
+end, { desc = "Go to previous [D]iagnostic message" })
+vim.keymap.set("n", "]d", function()
+  vim.diagnostic.jump({ count = 1 })
+end, { desc = "Go to next [D]iagnostic message" })
 vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Show diagnostic [E]rror messages" })
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
 
@@ -139,7 +142,12 @@ local blink_opts = {
   sources = {
     default = { "lsp", "path", "snippets", "buffer" },
   },
-  fuzzy = { implementation = "prefer_rust_with_warning" },
+  fuzzy = {
+    implementation = "prefer_rust_with_warning",
+    prebuilt_binaries = {
+      force_version = "v1.10.0",
+    },
+  },
 }
 
 -- Deduplication filter for completion items
@@ -168,8 +176,21 @@ require("blink.cmp").setup(blink_opts)
 require("nvim-treesitter.install").prefer_git = true
 require("nvim-treesitter.config").setup({
   ensure_installed = {
-    "bash", "c", "cpp", "diff", "html", "lua", "luadoc", "markdown",
-    "vim", "vimdoc", "sql", "json", "go", "typescript", "javascript",
+    "bash",
+    "c",
+    "cpp",
+    "diff",
+    "html",
+    "lua",
+    "luadoc",
+    "markdown",
+    "vim",
+    "vimdoc",
+    "sql",
+    "json",
+    "go",
+    "typescript",
+    "javascript",
   },
   auto_install = true,
   highlight = { enable = true },
@@ -194,7 +215,9 @@ require("telescope").setup({
   pickers = {
     live_grep = {
       file_ignore_patterns = { "node_modules", ".git", ".venv" },
-      additional_args = function(_) return { "--hidden" } end,
+      additional_args = function(_)
+        return { "--hidden" }
+      end,
     },
     find_files = {
       file_ignore_patterns = { "node_modules", ".git", ".venv" },
@@ -302,7 +325,9 @@ require("oil").setup({
     },
     get_win_title = nil,
     preview_split = "right",
-    override = function(conf) return conf end,
+    override = function(conf)
+      return conf
+    end,
   },
 })
 
@@ -343,17 +368,12 @@ require("gitsigns").setup({
 })
 
 -- =============================================================================
--- COMMENT (line commenting)
--- =============================================================================
-
-require("Comment").setup({})
-
--- =============================================================================
--- MINI.NIM (mini.basics + mini.surround)
+-- MINI.NIM (mini.basics + mini.surround + mini.comment)
 -- =============================================================================
 
 require("mini.basics").setup()
 require("mini.surround").setup()
+require("mini.comment").setup()
 
 -- =============================================================================
 -- LSP CONFIG (lspconfig + diagnostics)
@@ -515,7 +535,9 @@ dap.configurations.c = {
     name = "attach playdate simulator",
     type = "lldb",
     request = "attach",
-    pid = function() return require("dap.utils").pick_process() end,
+    pid = function()
+      return require("dap.utils").pick_process()
+    end,
   },
   {
     name = "launch playdate (under debugger)",
@@ -531,9 +553,15 @@ dap.configurations.c = {
 local dapui = require("dapui")
 dapui.setup()
 
-dap.listeners.after.event_initialized["dapui"] = function() dapui.open() end
-dap.listeners.before.event_terminated["dapui"] = function() dapui.close() end
-dap.listeners.before.event_exited["dapui"] = function() dapui.close() end
+dap.listeners.after.event_initialized["dapui"] = function()
+  dapui.open()
+end
+dap.listeners.before.event_terminated["dapui"] = function()
+  dapui.close()
+end
+dap.listeners.before.event_exited["dapui"] = function()
+  dapui.close()
+end
 
 require("nvim-dap-virtual-text").setup()
 
@@ -545,22 +573,48 @@ vim.api.nvim_create_autocmd("FileType", {
       vim.keymap.set("n", keys, func, { buffer = bufnr, desc = desc })
     end
 
-    map("<leader>db", function() dap.toggle_breakpoint() end, "Debug: Toggle Breakpoint")
-    map("<leader>dB", function() dap.set_breakpoint(vim.fn.input("Condition: ")) end, "Debug: Conditional Breakpoint")
-    map("<leader>dbx", function() dap.clear_breakpoints() end, "Debug: Clear All Breakpoints")
-    map("<leader>de", function() dap.set_exception_breakpoints({ "all" }) end, "Debug: Break on Exceptions")
-    map("<leader>dc", function() dap.run_to_cursor() end, "Debug: Run to Cursor")
-    map("<leader>dl", function() dap.set_breakpoint(nil, nil, vim.fn.input("Log point message: ")) end, "Debug: Logpoint")
+    map("<leader>db", function()
+      dap.toggle_breakpoint()
+    end, "Debug: Toggle Breakpoint")
+    map("<leader>dB", function()
+      dap.set_breakpoint(vim.fn.input("Condition: "))
+    end, "Debug: Conditional Breakpoint")
+    map("<leader>dbx", function()
+      dap.clear_breakpoints()
+    end, "Debug: Clear All Breakpoints")
+    map("<leader>de", function()
+      dap.set_exception_breakpoints({ "all" })
+    end, "Debug: Break on Exceptions")
+    map("<leader>dc", function()
+      dap.run_to_cursor()
+    end, "Debug: Run to Cursor")
+    map("<leader>dl", function()
+      dap.set_breakpoint(nil, nil, vim.fn.input("Log point message: "))
+    end, "Debug: Logpoint")
 
-    map("<leader>du", function() dapui.toggle() end, "Debug: Toggle UI")
-    map("<leader>dr", function() dap.repl.open() end, "Debug: Open REPL")
-    map("<leader>dw", function() require("dapui").eval(vim.fn.expand("<cword>")) end, "Debug: Evaluate Word")
+    map("<leader>du", function()
+      dapui.toggle()
+    end, "Debug: Toggle UI")
+    map("<leader>dr", function()
+      dap.repl.open()
+    end, "Debug: Open REPL")
+    map("<leader>dw", function()
+      require("dapui").eval(vim.fn.expand("<cword>"))
+    end, "Debug: Evaluate Word")
 
-    map("<leader>de", function() require("dapui").eval() end, "Debug: Evaluate Expression")
-    vim.keymap.set("v", "<leader>de", function() require("dapui").eval() end, { buffer = bufnr, desc = "Debug: Evaluate Selection" })
+    map("<leader>de", function()
+      require("dapui").eval()
+    end, "Debug: Evaluate Expression")
+    vim.keymap.set("v", "<leader>de", function()
+      require("dapui").eval()
+    end, { buffer = bufnr, desc = "Debug: Evaluate Selection" })
 
-    map("<leader>da", function() dap.continue() end, "Debug: Attach Playdate")
-    map("<leader>dd", function() dap.disconnect({ terminateDebuggee = true }) end, "Debug: Detach")
+    map("<leader>da", function()
+      dap.continue()
+    end, "Debug: Attach Playdate")
+    map("<leader>dd", function()
+      dap.disconnect({ terminateDebuggee = true })
+    end, "Debug: Detach")
   end,
 })
 

@@ -58,6 +58,7 @@ set -gx PATH $PATH $HOME/Downloads
 set -gx PATH $PATH $HOME/.sst/bin
 set -gx PATH $PATH $HOME/.opencode/bin
 set -gx PATH $PATH $HOME/zig
+set -gx PATH $PATH $HOME/usr/local/bin
 
 # Environment variables
 set -gx PLAYDATE_SDK_PATH "$HOME/projects/playdate/PlaydateSDK"
