@@ -27,6 +27,7 @@ vim.pack.add({
   "https://github.com/navarasu/onedark.nvim",
   "https://github.com/echasnovski/mini.nvim",
   "https://github.com/echasnovski/mini.icons",
+  "https://github.com/braxtons12/blame_line.nvim",
 })
 
 -- =============================================================================

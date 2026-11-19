@@ -1,6 +1,5 @@
 neovim
 stow
-fish
 vim
 git
 jq
@@ -12,3 +11,4 @@ ripgrep
 fzf
 zoxide
 nvm
+zsh-autosuggestions

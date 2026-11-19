@@ -113,24 +113,30 @@ install_font() {
   log "$check" "Font installed"
 }
 
-setup_fish() {
+setup_zsh() {
+  local zsh_path
+  if [[ "$OS" == "macos" ]]; then
+    zsh_path="/bin/zsh"
+  else
+    zsh_path=$(command -v zsh)
+  fi
+
   local current_shell
   if [[ "$OS" == "macos" ]]; then
     current_shell=$(dscl . -read /Users/$USER UserShell 2>/dev/null | awk '{print $2}' | xargs basename)
   else
     current_shell=$(getent passwd $USER 2>/dev/null | cut -d: -f7 | xargs basename)
   fi
-  
-  [[ "$current_shell" == "fish" ]] && return
-  
+
+  [[ "$current_shell" == "zsh" ]] && return
+
   log "$info" "Current shell: $current_shell"
-  read -p "Set fish as default shell? (y/n) " -n 1 -r
+  read -p "Set zsh as default shell? (y/n) " -n 1 -r
   echo
-  
+
   if [[ $REPLY =~ ^[Yy]$ ]]; then
-    local fish_path=$(command -v fish)
-    chsh -s "$fish_path" || sudo chsh -s "$fish_path" "$USER"
-    log "$check" "Fish set as default shell"
+    chsh -s "$zsh_path" || sudo chsh -s "$zsh_path" "$USER"
+    log "$check" "zsh set as default shell"
   fi
 }
 
@@ -147,7 +153,7 @@ main() {
   install_packages
   install_zoxide
   install_font
-  setup_fish
+  setup_zsh
   stow_dotfiles
   echo ""
   log "$check" "Installation complete!"

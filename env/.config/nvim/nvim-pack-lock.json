@@ -4,6 +4,10 @@
       "rev": "e30b7f2008e52442154b66f7c519bfd2f1e32acb",
       "src": "https://github.com/numToStr/Comment.nvim"
     },
+    "blame_line.nvim": {
+      "rev": "9b469d97b6cb50b12e5569ddc9d899513d0671b6",
+      "src": "https://github.com/braxtons12/blame_line.nvim"
+    },
     "blink.cmp": {
       "rev": "37c96dc06032b3f128b230b5fb193706535b3811",
       "src": "https://github.com/saghen/blink.cmp",

@@ -1,7 +1,7 @@
 build-essential
 neovim
 stow
-fish
+zsh
 vim
 git
 jq
